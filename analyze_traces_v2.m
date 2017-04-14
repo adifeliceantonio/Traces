@@ -35,6 +35,7 @@ nl_session=csvread(nlfilename, 1,0);
 
 %% Create Data Arrays and Block Regressors
 %determine number of arrays and time points
+disp('Importing Data')
 [acq_totaltime, acq_totalrois]=size(acq_session);
 [nl_totaltime, nl_totalrois]=size(nl_session);
 
@@ -94,6 +95,7 @@ nl_data.blocknl_6hrs=nominal(nl_data.blocknl_6hrs);
 %% Let's DO STATISTICS
 %Massively univariate approach to identify ROIS that differ from baseline
 %and from the different sessions
+disp('Running Statistics')
 H=[0 1 -1];
 nl_contrastnames={'acq', 'post_acq'};
 nl_finders={findnl, findnl_post};
@@ -117,6 +119,7 @@ for i=1:nl_totalrois-1
         end      
     end
 end
+
 %Massively univariate approach to identify ROIS that differ from baseline
 %and from the different sessions
 acq_contrastnames={'acq', 'acq_post'};
@@ -143,7 +146,7 @@ for i=1:acq_totalrois-1
 end
 
 
-
+disp('Making figures')
 % Make Pie charts
 labels={'inactive', 'active'};
 subplot(2,2,1);
@@ -162,7 +165,7 @@ subplot(2,2,4)
 resnl_post=nominal(nl_results.NL_post);
 pie(resnl_post)
 title('Post NL')
-
+disp('Saving Data')
 save_filenameacq=sprintf('%s_ACQ_results.mat', rat_id);
 save(save_filenameacq, 'acq_results', 'acq*', '-v7.3');
 save_filenamenl=sprintf('%s_NL_results.mat', rat_id);
